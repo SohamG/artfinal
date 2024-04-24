@@ -1,0 +1,46 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: gray;
+}
+
+canvas {
+  display: block;
+}
+
+svg {
+    position: absolute;
+    border-style: dashed;
+    border-color: #f0f;
+    border-radius: 50px;
+}
+
+aside {
+    position: absolute;
+    left: 900px;
+    top: 100px;
+}
+
+button {
+    padding: 10px;
+}
+
+#win {
+    padding-top: 20px;
+}
+
+#score {
+    font-size: 2.5em;
+    border: 2px solid red;
+}
+
+dialog {
+    font-size: 1.5em;
+}
+
+dialog > button {
+    margin-top: 25px;
+    margin-right: 10px;
+    font-size: 1em;
+}
