@@ -15,6 +15,7 @@ let score_elt;
 let bgImg;
 let quack;
 let benny;
+let bell;
 
 let svgs = {
     "congress": {},
@@ -50,7 +51,16 @@ let quips = {
         {
             "content": "Choose which of the following countries have Weapons of Mass Destruction:",
             "buttons": ["Not this one","Not this one either"]
-        }
+        },
+        {
+            "content": "What is the solution to Homelessness?",
+            "buttons": ["Fund Ukraine", "Fund Israel"]
+        },
+        {
+            "content": "America is a nation that can be defined in a single word...",
+            "buttons": ["akdkejfwq'kfnrjf'rkjfmkejfkmd"]
+        },
+        
     ],
     "scotus": [
         {
@@ -64,6 +74,14 @@ let quips = {
         {
             "content": "What should judges do in their vacations?",
             "buttons": ["Private Jet tours ✈", "Luxury golf resorts", "BOTH!!"]
+        },
+        {
+            "content": "Supreme court justices are supposed to be apolitical",
+            "buttons": ["Thats it thats the joke"]
+        },
+        {
+            "content": "Are the frogs turning gay?",
+            "buttons": ["Hell yeah 🇺🇸"]
         }
     ],
     "irs" : [
@@ -82,6 +100,10 @@ let quips = {
         {
             "content": "Does your candy have flour?",
             "buttons": ["Yes and I pay 6.25% sales tax to Illinois", "No tax for me 😎"]
+        },
+        {
+            "content": "Fuck you you dont get a joke",
+            "buttons": ["ok"]
         }
     ]
 };
@@ -110,9 +132,8 @@ class Ball {
 		this.ballBounce()
 		this.xLoc = this.xLoc + this.ballSpeedX;
 		this.yLoc = this.yLoc + this.ballSpeedY;
-		this.ballDisplay()
-		this.ballBounce()
-		
+		this.ballDisplay();
+		this.ballEat();
 	}
 	ballBounce(){
 		if(this.xLoc < 0 || this.xLoc > width){
@@ -121,6 +142,10 @@ class Ball {
 		if(this.yLoc < 0 || this.yLoc > height){
 			this.ballSpeedY = this.ballSpeedY * -1;
 		}
+        this.ballEat();
+
+	}
+    ballEat() {
 		let a = Math.trunc(this.xLoc / 10);
 		let b = Math.trunc(this.yLoc / 10);
 
@@ -134,12 +159,13 @@ class Ball {
                 console.log("food woops");
             }
 		}
-
-	}
+    }
 	posReset() {
 		this.xLoc = this.w / 2;
 		this.YLoc = this.h / 2;
 		this.ballDisplay() 
+        background(bgImg, 255);
+
 	}
 	setSpeed(a, b) {
 		this.ballSpeedX = a;
@@ -148,6 +174,7 @@ class Ball {
 }
 
 function makeDialog(dobj) {
+
     let d = createElement("dialog", dobj["content"] + "<br/>");
     let btns = dobj["buttons"];
 
@@ -155,7 +182,6 @@ function makeDialog(dobj) {
         console.log(b)
         let btn = createElement("button", btns[b]);
         btn.mouseClicked(() => d.elt.close());
-
         btn.parent(d);
     }
 
@@ -180,6 +206,8 @@ function eatFood(a,b) {
         return;
     }
     eat_last = Date.now();
+
+	background(bgImg, 255);
 
 
     let x = a;
@@ -214,7 +242,10 @@ function eatFood(a,b) {
     let dialog = makeDialog(randomQuip());
     console.log("dialog", dialog)
     if (dialog) {
+        bell.setVolume(0.3)
+        bell.play();
         dialog.elt.showModal();
+
         modalShown = true;
     }
     
@@ -320,6 +351,7 @@ function preload() {
     bgImg = loadImage("despair.png");
     quack = loadSound("quack.mp3");
     benny = loadSound("benny.mp3");
+    bell = loadSound("bell.mp3");
 }
 
 function setScore(x) {
@@ -333,6 +365,9 @@ function funnyScore() {
 function draw() {
     if (modalShown) return;
 
+    // if (frameCount % 500) {
+	//     background(bgImg, 255);
+    // }
 
 
 	if (frameCount == 1) {
@@ -348,7 +383,6 @@ function draw() {
 let aflag = false;
 
 function keyPressed(e) {
-
     if (aflag == false) {
         userStartAudio();
         aflag = true;
@@ -368,7 +402,12 @@ function keyPressed(e) {
     case LEFT_ARROW:
 		B.setSpeed(-1*speed, 0);
 		break;
+    case ESCAPE:
+        B.posReset();
+        break;
     default:
-		return;
+        break;
 	}
+
+    B.ballEat();
 }
