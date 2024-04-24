@@ -111,6 +111,7 @@ class Ball {
 		this.xLoc = this.xLoc + this.ballSpeedX;
 		this.yLoc = this.yLoc + this.ballSpeedY;
 		this.ballDisplay()
+		this.ballBounce()
 		
 	}
 	ballBounce(){
@@ -224,6 +225,7 @@ function eatFood(a,b) {
 
 function setup() {
 	createCanvas(800, 800);
+
 	B = new Ball(800, 800);
     getAudioContext().suspend()
     benny.setVolume(0.3);
@@ -254,6 +256,8 @@ function setup() {
     });
 
     setInterval(funnyScore, 5000);
+
+	background(bgImg, 255);
 
 }
 
@@ -329,7 +333,6 @@ function funnyScore() {
 function draw() {
     if (modalShown) return;
 
-	background(bgImg, 255);
 
 
 	if (frameCount == 1) {
